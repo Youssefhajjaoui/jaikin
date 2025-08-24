@@ -100,7 +100,7 @@ public class application extends JPanel {
         if (controlPoints.isEmpty())
             return;
 
-        g2.setColor(Color.RED);
+        g2.setColor(Color.white);
         for (Point p : controlPoints) {
             drawPoint(g2, p);
         }
@@ -113,7 +113,6 @@ public class application extends JPanel {
             List<Point> toDraw = (steps.isEmpty() ? controlPoints : steps.get(currentStep));
             g2.setColor(Color.WHITE);
             if (animating) {
-
                 for (int i = 0; i < toDraw.size() - 1; i++) {
                     Point p1 = toDraw.get(i);
                     Point p2 = toDraw.get(i + 1);
@@ -141,7 +140,7 @@ public class application extends JPanel {
     }
 
     private void drawPoint(Graphics2D g2, Point p) {
-        g2.fillOval(p.x - 4, p.y - 4, 8, 8);
+        g2.drawOval(p.x - 4, p.y - 4, 8, 8);
     }
 
     public List<Point> getControlPoints() {
