@@ -49,7 +49,7 @@ public class application extends JPanel {
                     animating = false;
 
                     if (timer != null) {
-                        timer.stop(); 
+                        timer.stop();
                         timer = null;
                     }
                     repaint();
@@ -78,10 +78,13 @@ public class application extends JPanel {
         } else {
             List<Point> toDraw = (steps.isEmpty() ? controlPoints : steps.get(currentStep));
             g2.setColor(Color.WHITE);
-            for (int i = 0; i < toDraw.size() - 1; i++) {
-                Point p1 = toDraw.get(i);
-                Point p2 = toDraw.get(i + 1);
-                g2.drawLine(p1.x, p1.y, p2.x, p2.y);
+            if (animating) {
+
+                for (int i = 0; i < toDraw.size() - 1; i++) {
+                    Point p1 = toDraw.get(i);
+                    Point p2 = toDraw.get(i + 1);
+                    g2.drawLine(p1.x, p1.y, p2.x, p2.y);
+                }
             }
             // g2.setColor(Color.RED);
             // for (Point p : toDraw)
@@ -93,6 +96,7 @@ public class application extends JPanel {
         if (timer != null)
             timer.stop();
         currentStep = 0;
+        repaint();
 
         timer = new Timer(1000, e -> {
             currentStep = (currentStep + 1) % steps.size();
