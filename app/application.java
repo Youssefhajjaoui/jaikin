@@ -8,6 +8,7 @@ public class application extends JPanel {
     private final List<Point> controlPoints = new ArrayList<>();
     private final List<List<Point>> steps = new ArrayList<>();
     private int currentStep = 0;
+    private boolean animating;
     private Timer timer;
 
     public application() {
@@ -18,9 +19,11 @@ public class application extends JPanel {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    controlPoints.add(new Point(e.getX(), e.getY()));
-                    repaint();
-                    
+                    if (!animating) {
+                        controlPoints.add(new Point(e.getX(), e.getY()));
+                        repaint();
+                    }
+
                 }
             }
         });
@@ -33,10 +36,23 @@ public class application extends JPanel {
                     if (controlPoints.size() >= 2) {
                         steps.clear();
                         steps.addAll(algo.generateChaikinSteps(controlPoints));
+                        animating = true;
+
                         startAnimation();
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.exit(0);
+                } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    controlPoints.clear();
+                    steps.clear();
+                    currentStep = 0;
+                    animating = false;
+
+                    if (timer != null) {
+                        timer.stop(); 
+                        timer = null;
+                    }
+                    repaint();
                 }
             }
         });
@@ -69,7 +85,7 @@ public class application extends JPanel {
             }
             // g2.setColor(Color.RED);
             // for (Point p : toDraw)
-            //     drawPoint(g2, p);
+            // drawPoint(g2, p);
         }
     }
 

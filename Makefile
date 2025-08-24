@@ -2,5 +2,5 @@ clean:
 	@rm -rf build
 
 run:
-	@javac app/*.java Chaikin.java -d build
-	@java -cp build Chaikin
+	@javac app/*.java Jaikin.java -d build
+	@java -cp build Jaikin

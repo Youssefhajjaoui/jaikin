@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chaikin extends JPanel {
+public class Jaikin extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Chaikin's Algorithm Animation");
