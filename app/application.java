@@ -10,6 +10,8 @@ public class application extends JPanel {
     private int currentStep = 0;
     private boolean animating;
     private Timer timer;
+    Point selectedPoint = null;
+    int dragThreshold = 10;
 
     public application() {
         setPreferredSize(new Dimension(800, 600));
@@ -17,17 +19,39 @@ public class application extends JPanel {
 
         // Mouse listener to add points
         addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
+
+                    for (Point p : controlPoints) {
+                        if (p.distance(e.getPoint()) <= dragThreshold) {
+                            selectedPoint = p;
+                            return;
+                        }
+                    }
                     if (!animating) {
+
                         controlPoints.add(new Point(e.getX(), e.getY()));
                         repaint();
                     }
-
                 }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                selectedPoint = null;
             }
         });
 
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (selectedPoint != null) {
+                    selectedPoint.setLocation(e.getX(), e.getY());
+                    repaint();
+                }
+            }
+        });
         // Key listener for Enter and Escape
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
@@ -93,12 +117,15 @@ public class application extends JPanel {
     }
 
     private void startAnimation() {
+
         if (timer != null)
             timer.stop();
         currentStep = 0;
         repaint();
 
         timer = new Timer(1000, e -> {
+            steps.clear();
+            steps.addAll(algo.generateChaikinSteps(controlPoints));
             currentStep = (currentStep + 1) % steps.size();
             repaint();
         });
