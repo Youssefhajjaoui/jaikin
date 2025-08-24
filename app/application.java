@@ -20,6 +20,7 @@ public class application extends JPanel {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     controlPoints.add(new Point(e.getX(), e.getY()));
                     repaint();
+                    
                 }
             }
         });
@@ -49,21 +50,26 @@ public class application extends JPanel {
         if (controlPoints.isEmpty())
             return;
 
+        g2.setColor(Color.RED);
+        for (Point p : controlPoints) {
+            drawPoint(g2, p);
+        }
+
         g2.setStroke(new BasicStroke(2));
 
         if (controlPoints.size() == 1) {
             drawPoint(g2, controlPoints.get(0));
         } else {
             List<Point> toDraw = (steps.isEmpty() ? controlPoints : steps.get(currentStep));
-            g2.setColor(Color.BLUE);
+            g2.setColor(Color.WHITE);
             for (int i = 0; i < toDraw.size() - 1; i++) {
                 Point p1 = toDraw.get(i);
                 Point p2 = toDraw.get(i + 1);
                 g2.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
-            g2.setColor(Color.RED);
-            for (Point p : toDraw)
-                drawPoint(g2, p);
+            // g2.setColor(Color.RED);
+            // for (Point p : toDraw)
+            //     drawPoint(g2, p);
         }
     }
 

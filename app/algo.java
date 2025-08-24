@@ -11,7 +11,7 @@ public class algo {
 
         for (int step = 0; step < 7; step++) {
             List<Point> next = new ArrayList<>();
-            next.add(current.get(0)); // keep first point
+            next.add(current.get(0)); 
             for (int i = 0; i < current.size() - 1; i++) {
                 Point p0 = current.get(i);
                 Point p1 = current.get(i + 1);
@@ -22,7 +22,7 @@ public class algo {
                 next.add(Q);
                 next.add(R);
             }
-            next.add(current.get(current.size() - 1)); // keep last point
+            next.add(current.get(current.size() - 1));
             current = next;
             steps.add(new ArrayList<>(current));
         }
