@@ -10,8 +10,9 @@ public class application extends JPanel {
     private int currentStep = 0;
     private boolean animating;
     private Timer timer;
-    Point selectedPoint = null;
-    int dragThreshold = 10;
+    private Point selectedPoint = null;
+    private int dragThreshold = 10;
+    private boolean err;
 
     public application() {
         setPreferredSize(new Dimension(800, 600));
@@ -58,11 +59,15 @@ public class application extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (controlPoints.size() >= 2) {
+                        err = false;
                         steps.clear();
                         steps.addAll(algo.generateChaikinSteps(controlPoints));
                         animating = true;
 
                         startAnimation();
+                    } else {
+                        err = true;
+                        repaint();
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.exit(0);
@@ -71,6 +76,7 @@ public class application extends JPanel {
                     steps.clear();
                     currentStep = 0;
                     animating = false;
+                    err = false;
 
                     if (timer != null) {
                         timer.stop();
@@ -87,6 +93,10 @@ public class application extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        if (err) {
+            g.setColor(Color.RED);
+            g.drawString("You need to select more Points.", 20, 20);
+        }
         if (controlPoints.isEmpty())
             return;
 
@@ -110,9 +120,7 @@ public class application extends JPanel {
                     g2.drawLine(p1.x, p1.y, p2.x, p2.y);
                 }
             }
-            // g2.setColor(Color.RED);
-            // for (Point p : toDraw)
-            // drawPoint(g2, p);
+
         }
     }
 
